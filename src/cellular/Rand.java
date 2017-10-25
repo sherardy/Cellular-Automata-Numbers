@@ -27,7 +27,9 @@ public class Rand {
 			}
 			getHexNums(); // create the grid of hex digits from the CA grid after 4 time steps
 			
-			// next part takes all the 
+			// next part generates takes the 8 hex digits on each row and uses that to create a 32 bit integer
+			// so on an 8x8 grid it creates 8 32-bit integers using 64 hexadecimal digits
+			// could possibly create an another 8 by also taking the hex values from top to bottom?
 			StringBuilder str = new StringBuilder();
 			for (String[] nums : hexNums) {
 				for (String hex : nums) {
@@ -36,9 +38,9 @@ public class Rand {
 						// System.out.println(hex);
 					} else {
 						// System.out.println()
-						long l = Long.parseLong(str.toString(), 16);
-						values.push(l);
-						str.setLength(0);
+						long l = Long.parseLong(str.toString(), 16); // converts hex value to long
+						values.push(l); // add it to list of random values
+						str.setLength(0); // reset the string builder
 					}
 				}
 			}
@@ -49,7 +51,10 @@ public class Rand {
 	// public double getNextDouble() {
 	// return Double.parseDouble(getNext());
 	// }
-
+	
+	// updates the grid by 1 time step using rule 63 (1 XOR C XOR N XOR S XOR E XOR W)
+	// does not apply changes to the grid until all the new states have been calculated first
+	// so a cell wont affect the outcome of the other cells by updating its state before they have
 	public void step() {
 		Cell[][] next = new Cell[s][s];
 		for (int i = 0; i < s; i++) {
@@ -57,6 +62,8 @@ public class Rand {
 				int nextState = 1;
 				int c = grid[i][j].getState();
 				nextState ^= c;
+				// for cells on the edges, itll ignore them 
+				// so a cell on the top row wont take into account cells to the north in the rule for example
 				if (j < s - 1) { // east
 					nextState ^= grid[i][j + 1].getState();
 				}
@@ -69,12 +76,14 @@ public class Rand {
 				if (j > 0) { // west
 					nextState ^= grid[i][j - 1].getState();
 				}
+				// copy the cell and its new state to the temporary grid with the updated cells
 				Cell n = grid[i][j];
 				n.setState(nextState);
 
 				next[i][j] = n;
 			}
 		}
+		// apply the new states to the actual grid
 		grid = next;
 
 		// counter++;
