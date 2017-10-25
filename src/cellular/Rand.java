@@ -2,31 +2,34 @@ import java.util.Deque;
 import java.util.ArrayDeque;
 
 public class Rand {
-	private int s = 8;
+	private int s = 8 // size. needs to change to be a constant 
 	private Cell[][] grid = new Cell[s][s];
-	private String[][] hexNums;
-	private Deque<Long> values;
+	private String[][] hexNums; // 2d grid of hexadecimal digits created from the CA
+	private Deque<Long> values; // numbers produced from the generated hex digits
 
 	public Rand() {
 		values = new ArrayDeque<Long>();
 		initialize();
 	}
 
-	// time)–which are treated collectively as a hexadecimal digit. These
-	// hexadecimal hexNums are then juxtaposed–cell after cell and line
-	// after line in a left-right, top-down manner–to create a sequence of
+	// time)√êwhich are treated collectively as a hexadecimal digit. These
+	// hexadecimal hexNums are then juxtaposed√êcell after cell and line
+	// after line in a left-right, top-down manner√êto create a sequence of
 	// x y random numbers, where x; y are the grid's dimensions. The
 	// process is then iterated. For example, an 8 8 grid will produce
 	// 64 hexadecimal random hexNums every four time steps.
 	public long getNext() {
-		if (values.peekFirst() == null) {
-			for (int i = 0; i < 8; i++) {
+		if (values.peekFirst() == null) { // dont need to generate more random nums unless we're actually out of them
+			// run for 4 time steps, so each cell will have 
+			// generated 4 bits to then create a hexadecimal digit from
+			for (int i = 0; i < 4; i++) { 
 				step();
 			}
-			getHexNums();
+			getHexNums(); // create the grid of hex digits from the CA grid after 4 time steps
+			
+			// next part takes all the 
 			StringBuilder str = new StringBuilder();
 			for (String[] nums : hexNums) {
-
 				for (String hex : nums) {
 					if (str.length() != 8) {
 						str.append(hex);
