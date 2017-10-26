@@ -2,7 +2,7 @@ import java.util.Deque;
 import java.util.ArrayDeque;
 
 public class Rand {
-	private int s = 8 // size. needs to change to be a constant 
+	private int s = 8; // size. needs to change to be a constant 
 	private Cell[][] grid = new Cell[s][s];
 	private String[][] hexNums; // 2d grid of hexadecimal digits created from the CA
 	private Deque<Long> values; // numbers produced from the generated hex digits
