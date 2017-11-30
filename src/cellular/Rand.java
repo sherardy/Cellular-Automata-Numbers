@@ -9,7 +9,7 @@ public class Rand {
 
 	public Rand() {
 		values = new ArrayDeque<Long>();
-		initialize();
+		//initialize();
 	}
 
 	// time)Ðwhich are treated collectively as a hexadecimal digit. These
@@ -89,12 +89,28 @@ public class Rand {
 		// counter++;
 	}
 
-	public void initialize() {
-		for (int i = 0; i < s; i++) {
+	public void seed(long seed) {
+	/*	for (int i = 0; i < s; i++) {
 			for (int j = 0; j < s; j++) {
 				grid[i][j] = new Cell((int) Math.floor(Math.random() * 2));
 			}
-		}
+		} */
+    	String bits=Long.toBinaryString(seed);
+    	int len=bits.length();
+    	while (len>0) {
+        for (int i = 0; i < s; i++) {
+    	    for (int j = 0; j < s; j++) {
+    		    if (len>0) {
+    		        grid[i][j]=new Cell(Integer.parseInt(Character.toString(bits.charAt(len-1))));
+    		        len--;
+    		    }
+                else
+    		       grid[i][j]=new Cell(0);
+                
+    		  
+    	    }
+        }
+    	}
 	}
 
 	private void getHexNums() {
